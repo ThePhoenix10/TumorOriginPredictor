@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TumorOriginPredictor</title>
+</head>
+<body>
+  <h1>A machine learning algorithm for estimating the probability that a given mutation profile corresponds to a particular tumor type.</h1>
+  <p><strong>RESEARCH USE ONLY</strong></p>
+  <p>
+    Enter comma-delimited list of capitalized genes reported as mutant in a clinical cancer sequencing report. <br>
+    e.g. (EGFR, KRAS, TP53).<br>
+  </p>
+  <label for="userInput">Enter Genes:</label>
+  <input type="text" id="userInput" size="100" />
+  <p></p>
+  <button onclick="submitInput()">Submit</button>
+  <p></p>
+
+  <p>Code by Paraic Kenny PhD, Gundersen Medical Foundation, La Crosse WI and Saicharan Vellanki<br>
+  Feedback welcome at pakenny@emplifyhealth.org</p>
+
+  <!-- Warning section -->
+  <div id="warning" style="font-weight: bold; margin-top: 10px;"></div>
+
+  <pre id="output">Awaiting input...</pre>
+
+  <script>
+    const API_BASE = window.API_BASE || "http://127.0.0.1:5000";
+
+    async function submitInput() {
+      const input = document.getElementById("userInput").value;
+      const output = document.getElementById("output");
+      const warning = document.getElementById("warning");
+      output.innerText = "Processing your query...";
+      warning.innerText = "";
+
+      const url = `${API_BASE}/evaluate?query=${encodeURIComponent(input)}`;
+      console.log("Submitting query to:", url);
+      console.log("Gene Input:", input);
+
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP ${response.status}: ${errorText}`);
+        }
+
+        const data = await response.json();
+        console.log("API Response:", data);
+
+        if (data.error) {
+          output.innerText = "Error: " + data.error + (data.invalid ? " → " + data.invalid.join(", ") : "");
+          return;
+        }
+
+        // Show backend message (e.g., no valid genes or ignored genes)
+        if (data.message) {
+          warning.innerText = data.message;
+        }
+
+        // If no valid genes or no predictions → stop here
+        if (!data.model_outputs || data.model_outputs.length === 0) {
+          output.innerText = "";
+          return;
+        }
+
+        // Otherwise build predictions
+        let result = "Input Genes: " + data.input_genes.join(", ") + "\n\n";
+
+        data.model_outputs.forEach(([model, top_pred, top3]) => {
+          result += `${model} Top Prediction: ${top_pred}\n`;
+          result += `Top 3: ${top3.map(([name, prob]) => `${name}: ${prob.toFixed(3)}`).join(", ")}\n\n`;
+        });
+
+        result += "Rank ordered list by average probability across models:\n\n";
+        data.ranked.forEach(([name, probs]) => {
+          const formattedProbs = probs.map(p => p.toFixed(3)).join(", ");
+          result += `${name.padEnd(35)} [${formattedProbs}]\n`;
+        });
+
+        output.innerText = result;
+
+      } catch (err) {
+        console.error("Request failed:", err);
+        output.innerText = "Request failed: " + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
