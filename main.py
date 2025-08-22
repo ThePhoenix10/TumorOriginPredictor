@@ -19,7 +19,7 @@ def calc_time(step_name, start_time):
     elapsed = time.time() - start_time
     print(f"[{step_name}] Elapsed: {elapsed:.2f} sec")
 
-app = Flask(__name__, static_url_path='')
+app = Flask(__name__, static_url_path='', static_folder='static')
 
 CORS(app, resources={r"/*": {"origins": "*"}})
 
