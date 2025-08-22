@@ -19,9 +19,8 @@ def calc_time(step_name, start_time):
     elapsed = time.time() - start_time
     print(f"[{step_name}] Elapsed: {elapsed:.2f} sec")
 
-app = Flask(__name__, static_url_path='', static_folder='static')
-
-CORS(app, resources={r"/*": {"origins": "*"}})
+app = Flask(__name__, static_url_path='')
+CORS(app)
 
 @app.route("/")
 def index():
@@ -53,6 +52,7 @@ def evaluate():
             message = f"These genes are not in the database and were ignored: {', '.join(invalid_genes)}"
         calc_time("Checked invalid genes", start_time)
 
+        # Counter for valid genes
         valid_count = len(valid_genes)
         if valid_count == 0:
             return jsonify({
