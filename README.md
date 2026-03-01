@@ -68,25 +68,18 @@ Dependencies include: NumPy, pandas, scikit-learn, SciPy, Matplotlib, Flask
 
 ---
 
-## Model Overview
+## Data
 
 ### Training Data
 
-- Large curated tumor genomics dataset: [MSK-MET 2021](https://www.cbioportal.org/study/summary?id=msk_met_2021)
+- Large curated tumor genomics dataset: [MSK-MET 2021](https://www.cbioportal.org/study/summary?id=msk_impact_2017)
 - Multi-cancer classification
-- Mutation-only feature space
+- 338-gene clinical sequencing panel
 
 ### Validation
 
 - Independent Gundersen Precision Oncology Cohort
-- 338-gene clinical sequencing panel
-
-### Performance
-
-- Greater than 80% Top-3 accuracy across common malignancies
-- External validation confirms real-world generalizability
-
----
+- 770 de-identified patient samples
 
 ## Documentation
 
