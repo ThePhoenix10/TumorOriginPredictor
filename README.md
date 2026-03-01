@@ -72,7 +72,7 @@ Dependencies include: NumPy, pandas, scikit-learn, SciPy, Matplotlib, Flask
 
 ### Training Data
 
-- Large curated tumor genomics dataset: [MSK-MET 2021](https://www.cbioportal.org/study/summary?id=msk_impact_2017)
+- Large curated tumor genomics dataset: [MSK-IMPACT 2017](https://www.cbioportal.org/study/summary?id=msk_impact_2017)
 - Multi-cancer classification
 - 338-gene clinical sequencing panel
 
