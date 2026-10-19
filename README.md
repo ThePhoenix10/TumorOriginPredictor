@@ -78,15 +78,6 @@ The live web application can be accessed at: [https://tumor-origin.com/](https:/
 
 This platform enables real-time tissue-of-origin prediction using somatic mutation profiles.
 
----
-
-## Authors
-- Saicharan Vellanki
-- Paraic Kenny, PhD — Gundersen Medical Foundation
-
-## Contact
-- saivellanki10@gmail.com
-- pakenny@emplifyhealth.org
 
 ---
 
